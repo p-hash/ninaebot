@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import hy
+import ltsm
 
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
