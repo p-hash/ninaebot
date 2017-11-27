@@ -1,2 +1,8 @@
 chatterbot
 pyTelegramBotAPI
+
+h5py 
+hy 
+keras 
+numpy 
+tensorflow

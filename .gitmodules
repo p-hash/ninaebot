@@ -1,0 +1,3 @@
+[submodule "LSTM-Text-Generation"]
+	path = LSTM-Text-Generation
+	url = https://github.com/philiparvidsson/LSTM-Text-Generation
