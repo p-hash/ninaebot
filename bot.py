@@ -1,9 +1,15 @@
+#!/usr/bin/env python3
+
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 import telebot
 import os 
 
-tgapi = telebot.TeleBot(os.environ['TOKEN'])
+token = os.environ.get('TOKEN')
+if not token:
+  print('Specify TOKEN environment variable')
+  exit(1)
+tgapi = telebot.TeleBot(token)
 
 chatterbot = ChatBot("Ninaebot")
 chatterbot.set_trainer(ChatterBotCorpusTrainer)
