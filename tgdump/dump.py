@@ -42,28 +42,28 @@ if __name__ == '__main__':
         limit = 100
 
         while True:
-          result = client(SearchRequest(
-            target_chat,
-            '',  # query
-            InputMessagesFilterEmpty(),  # msg_filter
-            None, None,  # min_date, max_date
-            0,  # offset_id
-            offset,  # add_offset
-            limit,  # limit
-            0,  # max_id
-            0,  # min_id
-            target_user
-          ))
-          all_msgs.extend(result.messages)
-          offset += limit
-          if not result.messages:
-            break
+            result = client(SearchRequest(
+              target_chat,
+              '',  # query
+              InputMessagesFilterEmpty(),  # msg_filter
+              None, None,  # min_date, max_date
+              0,  # offset_id
+              offset,  # add_offset
+              limit,  # limit
+              0,  # max_id
+              0,  # min_id
+              target_user
+            ))
+            all_msgs.extend(result.messages)
+            offset += limit
+            if not result.messages:
+                break
 
         all_msgs = [m.to_dict() for m in all_msgs]
-        filename = 'data/' + environ['TGDUMP_CHAT'] + '.dump'
+        filename = 'data/' + target_chat.title + '.dump'
         with open(filename, 'wb') as f:
-          pickle.dump(all_msgs, f, pickle.HIGHEST_PROTOCOL)
-          print(str(len(all_msgs)) + ' messages are saved to ' + filename)
+            pickle.dump(all_msgs, f, pickle.HIGHEST_PROTOCOL)
+            print(str(len(all_msgs)) + ' messages are saved to ' + filename)
 
         # input('Press Enter to stop this!\n')
     except KeyboardInterrupt:
