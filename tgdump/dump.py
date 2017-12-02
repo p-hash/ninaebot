@@ -72,7 +72,7 @@ if __name__ == '__main__':
             for m in all_msgs:
                 if m.get('fwd_from') or m.get('via_bot_id'):
                     continue
-                if m.get('message'):
+                if m.get('message') and len(m.get('message')) > 5:
                     text += m['message'] + '\n\n'
             with open(filename, 'w') as f:
                 f.write(text)
