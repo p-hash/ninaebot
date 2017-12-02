@@ -7,5 +7,5 @@ Downloads all messages from specific user from specific chat into pickle-encoded
 Copy `.env.example` into `.env` and edit it.
 Then run:
 ```
-env $(cat .env | xargs) ./dump.py
+./run.sh
 ```

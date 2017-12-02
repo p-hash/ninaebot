@@ -35,37 +35,47 @@ if __name__ == '__main__':
         print('INFO: Client initialized successfully!')
 
         target_user = client.get_entity(environ['TGDUMP_USER'])
-        target_chat = client.get_entity(environ['TGDUMP_CHAT'])
+        target_chats = environ['TGDUMP_CHATS'].split(',')
 
-        offset = 0
-        all_msgs = []
-        limit = 100
+        for chat in target_chats:
+            target_chat = client.get_entity(chat)
 
-        while True:
-            result = client(SearchRequest(
-              target_chat,
-              '',  # query
-              InputMessagesFilterEmpty(),  # msg_filter
-              None, None,  # min_date, max_date
-              0,  # offset_id
-              offset,  # add_offset
-              limit,  # limit
-              0,  # max_id
-              0,  # min_id
-              target_user
-            ))
-            all_msgs.extend(result.messages)
-            offset += limit
-            if not result.messages:
-                break
+            offset = 0
+            all_msgs = []
+            limit = 100
 
-        all_msgs = [m.to_dict() for m in all_msgs]
-        filename = 'data/' + target_chat.title + '.dump'
-        with open(filename, 'wb') as f:
-            pickle.dump(all_msgs, f, pickle.HIGHEST_PROTOCOL)
-            print(str(len(all_msgs)) + ' messages are saved to ' + filename)
+            while True:
+                result = client(SearchRequest(
+                  target_chat,
+                  '',  # query
+                  InputMessagesFilterEmpty(),  # msg_filter
+                  None, None,  # min_date, max_date
+                  0,  # offset_id
+                  offset,  # add_offset
+                  limit,  # limit
+                  0,  # max_id
+                  0,  # min_id
+                  target_user
+                ))
+                all_msgs.extend(result.messages)
+                offset += limit
+                if not result.messages:
+                    break
 
-        # input('Press Enter to stop this!\n')
+            all_msgs = [m.to_dict() for m in all_msgs]
+            filename = 'data/' + target_chat.title + '.dump'
+            with open(filename, 'wb') as f:
+                pickle.dump(all_msgs, f, pickle.HIGHEST_PROTOCOL)
+                print(str(len(all_msgs)) + ' messages are saved to ' + filename)
+            filename = 'data/' + target_chat.title + '.txt'
+            text = ''
+            for m in all_msgs:
+                if m.get('fwd_from') or m.get('via_bot_id'):
+                    continue
+                if m.get('message'):
+                    text += m['message'] + '\n\n'
+            with open(filename, 'w') as f:
+                f.write(text)
     except KeyboardInterrupt:
         pass
     finally:
